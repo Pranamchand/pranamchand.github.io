@@ -1,3 +1,18 @@
+// Preloader Logic
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        // Add a slight delay for smooth visual transition
+        setTimeout(() => {
+            preloader.classList.add('hidden');
+            // Remove from DOM after fade out transition (0.5s)
+            setTimeout(() => {
+                preloader.remove();
+            }, 500);
+        }, 300);
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 
 
