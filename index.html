@@ -4,224 +4,504 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pranam Chand</title>
+    <title>Pranam Chand </title>
     <meta name="description"
         content="Portfolio of Pranam Chand, an aspiring Data Analyst and Data Science student passionate about AI and machine learning.">
-
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-    <link rel="stylesheet" href="styles.css">
+    <!-- Clean Google Font: Inter & DM Serif Display for elegant contrast -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<!-- Preloader -->
+<div id="preloader" class="preloader">
+    <div class="loader-brand">PC</div>
+</div>
 
-<body>
-    <!-- Preloader -->
-    <div id="preloader" class="preloader">
-        <div class="spinner"></div>
+<!-- Custom Cursor -->
+<div class="cursor-dot"></div>
+
+<!-- Header Container -->
+<header class="header-container">
+    <div class="nav-brand">
+        <span class="highlight-purple brand-name">Pranam chand</span>
     </div>
+    <nav class="nav-pill">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+        <a href="Resume Pranam chand.pdf" download="Resume Pranam chand.pdf" class="btn resume-btn">Resume</a>
+        <button class="mobile-menu-btn" aria-label="Toggle Menu">
+            <i data-lucide="menu"></i>
+        </button>
+    </div>
+</header>
 
-    <div class="cursor-glow"></div>
-
-
-    <!-- Header -->
-    <header class="header-container">
-        <div class="header-name">Pranam chand</div>
-
-        <nav class="nav-pill">
-            <a href="#home" class="nav-link active">Home</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#contact" class="nav-link">Contact</a>
+<!-- Mobile Navigation Overlay -->
+<div class="mobile-nav-overlay">
+    <div class="mobile-nav-content">
+        <button class="close-mobile-menu" aria-label="Close Menu">
+            <i data-lucide="x"></i>
+        </button>
+        <nav class="mobile-links">
+            <a href="#home" onclick="closeMobileMenu()">Home</a>
+            <a href="#about" onclick="closeMobileMenu()">About</a>
+            <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+            <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+            <a href="#contact" onclick="closeMobileMenu()">Contact</a>
         </nav>
+    </div>
+</div>
 
-        <div class="resume-wrapper">
-            <a href="PRANAM CHAND resume.pdf" download="PRANAM CHAND resume.pdf" class="resume-btn">Resume</a>
+<main>
+    <!-- Home / Hero Section -->
+    <section id="home" class="hero section-spacing relative">
+
+        <!-- Background 2D abstract blobs (Vector Hand drawn style) -->
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+
+        <div class="hero-content z-10 relative">
+            <h1 class="hero-title-large" data-animate="up">
+                Hi there,<br> I'm <span class="text-serif">Pranam</span>
+            </h1>
+
+            <p class="hero-subtitle mb-8 relative z-10" data-animate="up" style="animation-delay: 0.1s">
+                <span id="typing-text">Data science student</span><span class="cursor">|</span> <br>
+                Passionate about data science and AI, I focus on building a strong foundation in programming, analytics,
+                and problem-solving.
+            </p>
+
+            <div class="hero-cta relative z-10" data-animate="up" style="animation-delay: 0.2s">
+                <a href="#projects" class="btn btn-pill-dark btn-hover-color">View Projects</a>
+                <a href="#contact" class="btn btn-pill-outline btn-hover-color">Contact Me <i
+                        data-lucide="arrow-right"></i></a>
+            </div>
+
+            <div class="relative z-10" style="margin-top: 32px;" data-animate="up" style="animation-delay: 0.3s">
+                <a href="https://maps.app.goo.gl/hYc5BoYwkA8okfkeA" target="_blank" class="location-badge">
+                    <i data-lucide="map-pin" style="color: #ea580c; width: 18px; height: 18px;"></i> Odisha, India
+                </a>
+            </div>
         </div>
-    </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <span id="animated-badge" class="badge" data-reveal>Data science student</span>
-                    <h1 data-reveal>Hi there, I’m <span class="accent hero-name">Pranam</span></h1>
-                    <p data-reveal>Passionate about data science and AI, focused on building a strong foundation in
-                        programming, analytics, and problem-solving.</p>
-                    <div class="hero-cta" data-reveal>
-                        <a href="#projects" class="btn btn-primary">View Projects</a>
-                        <a href="#contact" class="btn btn-outline">Contact Me</a>
+        <!-- Decorative SVG Sparkles -->
+        <svg class="absolute sparkle-1" width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M20 0 L22 18 L40 20 L22 22 L20 40 L18 22 L0 20 L18 18 Z" fill="#eab308" />
+        </svg>
+        <svg class="absolute sparkle-2" width="30" height="30" viewBox="0 0 40 40" fill="none">
+            <path d="M20 0 L22 18 L40 20 L22 22 L20 40 L18 22 L0 20 L18 18 Z" fill="#8b5cf6" />
+        </svg>
+    </section>
+
+    <!-- About Section (Bento Grid) -->
+    <section id="about" class="section-spacing relative">
+        <div class="section-header center relative" data-animate="up">
+            <svg class="absolute section-blob" width="120" height="80" viewBox="0 0 120 80">
+                <path d="M10,40 C10,10 50,0 80,20 C110,40 100,70 60,80 C20,90 10,70 10,40 Z" fill="#dcfce3" />
+            </svg>
+            <h2 class="relative z-10"><span class="text-serif">About</span> Me</h2>
+        </div>
+
+        <div class="bento-grid">
+            <!-- Large Card: About Me -->
+            <div class="bento-card card-large hover-lift tilt-card" data-animate="up">
+                <div class="bento-badge badge-blue">About me</div>
+                <p class="bento-text">
+                    I am a BSc Data Science student at Ravenshaw University, Odisha. As I continue my academic journey,
+                    I’m
+                    excited to explore the vast world of data science, machine learning, and artificial intelligence.
+                </p>
+                <p class="bento-text">
+                    My focus is on developing a strong technical foundation in AI while embracing new technologies and
+                    learning opportunities. I believe in continuous growth and am committed to expanding my knowledge
+                    and skills in this ever-evolving field.
+                </p>
+            </div>
+
+            <!-- Timeline Card -->
+            <div class="bento-card card-flat" data-animate="up" style="animation-delay: 0.1s">
+                <div class="bento-badge badge-orange">Learning Journey</div>
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Schooling</h4>
+                            <p><a href="https://maps.app.goo.gl/ZFwjieDLDQwsL9xDA" target="_blank">SACIE</a>,
+                                Mayurbhanj, Odisha<br>
+                                <span class="marks">91% Marks Secured</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Higher Secondary</h4>
+                            <p><a href="https://maps.app.goo.gl/nutKjYZFcVbUG8U36" target="_blank">NIST</a>, Balasore,
+                                Odisha<br>
+                                <span class="marks">89% Marks Secured</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Degree (Continuing)</h4>
+                            <p><a href="https://maps.app.goo.gl/bLPy9V7a4tDqjYtt5" target="_blank">Ravenshaw
+                                    University</a>, Cuttack<br>
+                                <span class="marks highlight-purple">Honours: Data Science</span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Hobbies & Skills small cards stacked horizontally or vertically -->
+            <div class="bento-stack">
+                <div class="bento-card bg-pattern card-flat" data-animate="up" style="animation-delay: 0.2s">
+                    <div class="bento-badge badge-purple">Hobbies</div>
+                    <div class="tag-cloud">
+                        <span class="pill-tag">Editing</span>
+                        <span class="pill-tag">Traveling</span>
+                        <span class="pill-tag">Photography</span>
                     </div>
                 </div>
 
+                <div class="bento-card card-flat" data-animate="up"
+                    style="animation-delay: 0.3s; background: linear-gradient(135deg, var(--bg-surface) 0%, var(--accent-purple-light) 100%);">
+                    <div class="bento-badge badge-purple">Innate Skills</div>
+                    <h3 class="highlight-purple-text" style="font-size: 2rem; margin-top: 10px;">Creativity</h3>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- About Section -->
-        <section id="about" class="bento-container">
-            <h2 class="section-title" data-reveal>About Me</h2>
-            <div class="bento-grid">
-                <!-- About Me (Left) -->
-                <div class="bento-item bento-medium" data-reveal>
-                    <h3>About me</h3>
-                    <p style="font-size: 0.95rem; margin-bottom: 10px;">I am a BSc Data Science student at Ravenshaw
-                        University, Odisha. As I begin my academic journey, I’m excited to explore the vast world of
-                        data science, machine learning, and artificial intelligence.</p>
-                    <p style="font-size: 0.95rem;">My focus is on developing a strong technical foundation in AI while
-                        embracing new technologies and learning opportunities. I believe in continuous growth and am
-                        committed to expanding my knowledge and skills in this ever-evolving field.</p>
+    <!-- Skills & Tools -->
+    <section id="skills" class="section-spacing bg-section relative">
+        <div class="section-header center relative" data-animate="up">
+            <svg class="absolute section-blob" width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="#fef08a" />
+            </svg>
+            <h2 class="relative z-10">Skills <span class="text-serif">&</span> Tools</h2>
+            <p class="relative z-10">Technologies and tools I use to get things done effectively.</p>
+        </div>
+
+        <div class="skills-grid">
+            <!-- Languages -->
+            <div class="skill-card card-flat" data-animate="up">
+                <div class="skill-icon-group">
+                    <div class="icon-circle"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
+                            alt="Java" loading="lazy" /></div>
+                    <div class="icon-circle"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                            alt="Python" loading="lazy" /></div>
+                    <div class="icon-circle"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+                            alt="HTML5" loading="lazy" /></div>
                 </div>
-
-                <!-- Learning Journey (Middle) -->
-                <div class="bento-item bento-medium" data-reveal>
-                    <h3>Learning Journey</h3>
-                    <ul class="timeline">
-                        <li>
-                            <strong>Schooling</strong>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary);"><a
-                                    href="https://maps.app.goo.gl/ZFwjieDLDQwsL9xDA" target="_blank"
-                                    rel="noopener noreferrer" class="timeline-link">SACIE</a>, Mayurbhanj,
-                                Odisha<br>91% Marks Secured</p>
-                        </li>
-                        <li>
-                            <strong>Higher Secondary</strong>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary);"><a
-                                    href="https://maps.app.goo.gl/nutKjYZFcVbUG8U36" target="_blank"
-                                    rel="noopener noreferrer" class="timeline-link">NIST</a>, Balasore, Odisha<br>89%
-                                Marks Secured</p>
-                        </li>
-                        <li>
-                            <strong>Degree</strong>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary);"><a
-                                    href="https://maps.app.goo.gl/bLPy9V7a4tDqjYtt5" target="_blank"
-                                    rel="noopener noreferrer" class="timeline-link">Ravenshaw University</a>,
-                                Cuttack<br>Honours: Data Science <span class="accent"></span>(Continuing)</span></p>
-                        </li>
-                    </ul>
+                <h3>Languages</h3>
+                <div class="skill-list">
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
+                            alt="Java" loading="lazy" /> Java</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                            alt="Python" loading="lazy" /> Python</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
+                            alt="HTML" loading="lazy" /> HTML</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg"
+                            alt="Pandas" loading="lazy" /> Pandas</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg"
+                            alt="NumPy" loading="lazy" /> NumPy</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg"
+                            alt="Matplotlib" loading="lazy" /> Matplotlib</span>
+                    <span class="skill-pill"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/1/17/Seaborn_icon.svg"
+                            onerror="this.src='https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg'"
+                            alt="Seaborn" loading="lazy" /> Seaborn</span>
                 </div>
+            </div>
 
-                <!-- Hobbies & Skills (Right Stack) -->
-                <div class="bento-stack">
-                    <div class="bento-item" data-reveal>
-                        <h3>Hobbies</h3>
-                        <div class="mini-tags-container"
-                            style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
-                            <span class="mini-tag">Editing</span>
-                            <span class="mini-tag">Traveling</span>
-                            <span class="mini-tag">Photography</span>
+            <!-- Tools -->
+            <div class="skill-card card-flat" data-animate="up" style="animation-delay: 0.1s">
+                <div class="skill-icon-group">
+                    <div class="icon-circle"><svg viewBox="0 0 48 48" width="24" height="24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#4CAF50"
+                                d="M41,10H25v28h16c0.553,0,1-0.447,1-1V11C42,10.447,41.553,10,41,10z" />
+                            <path fill="#388E3C" d="M32,15v18h8V15H32z" />
+                            <path fill="#2E7D32" d="M25,27h7v6h-7V27z" />
+                            <path fill="#1B5E20" d="M25,15h7v6h-7V15z" />
+                            <path fill="#164A19" d="M25,21h7v6h-7V21z" />
+                            <path fill="#4CAF50" d="M25,10L7,15v18l18,5V10z" />
+                            <path fill="#FFF"
+                                d="M12.915,28l2.846-5.744l-2.616-5.462h3.192l1.341,3.46c0.166,0.444,0.3,0.852,0.4,1.223 h0.038c0.101-0.347,0.244-0.74,0.428-1.181l1.456-3.501h3.04l-2.73,5.424L23.111,28h-3.23l-1.571-3.76 c-0.128-0.32-0.244-0.672-0.348-1.055h-0.038c-0.115,0.37-0.231,0.732-0.346,1.085L16.03,28H12.915z" />
+                        </svg></div>
+                    <div class="icon-circle"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT"
+                            loading="lazy" />
+                    </div>
+                    <div class="icon-circle"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+                            alt="VS Code" loading="lazy" /></div>
+                </div>
+                <h3>Tools</h3>
+                <div class="skill-list">
+                    <span class="skill-pill"><svg viewBox="0 0 48 48" width="18" height="18"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#4CAF50"
+                                d="M41,10H25v28h16c0.553,0,1-0.447,1-1V11C42,10.447,41.553,10,41,10z" />
+                            <path fill="#388E3C" d="M32,15v18h8V15H32z" />
+                            <path fill="#2E7D32" d="M25,27h7v6h-7V27z" />
+                            <path fill="#1B5E20" d="M25,15h7v6h-7V15z" />
+                            <path fill="#164A19" d="M25,21h7v6h-7V21z" />
+                            <path fill="#4CAF50" d="M25,10L7,15v18l18,5V10z" />
+                            <path fill="#FFF"
+                                d="M12.915,28l2.846-5.744l-2.616-5.462h3.192l1.341,3.46c0.166,0.444,0.3,0.852,0.4,1.223 h0.038c0.101-0.347,0.244-0.74,0.428-1.181l1.456-3.501h3.04l-2.73,5.424L23.111,28h-3.23l-1.571-3.76 c-0.128-0.32-0.244-0.672-0.348-1.055h-0.038c-0.115,0.37-0.231,0.732-0.346,1.085L16.03,28H12.915z" />
+                        </svg> Excel</span>
+                    <span class="skill-pill"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT"
+                            loading="lazy" />
+                        ChatGPT</span>
+                    <span class="skill-pill"><i data-lucide="zap"></i> Antigravity</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
+                            alt="VS Code" loading="lazy" /> VS Code</span>
+                    <span class="skill-pill"><i data-lucide="sparkles"></i> AI Studio</span>
+                </div>
+            </div>
+
+            <!-- Learning -->
+            <div class="skill-card card-flat" data-animate="up" style="animation-delay: 0.2s">
+                <div class="skill-icon-group">
+                    <div class="icon-circle">
+                        <div class="icon-circle"><img
+                                src="https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg"
+                                alt="Power BI" loading="lazy" /></div>
+                        <div class="icon-circle"><img
+                                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg"
+                                alt="R Language" loading="lazy" /></div>
+                    </div>
+                </div>
+                <h3>Currently Learning</h3>
+                <div class="skill-list learning-list">
+                    <span class="skill-pill"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg"
+                            alt="Power BI" loading="lazy" /> Power BI</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                            alt="Python" loading="lazy" /> Python Libraries</span>
+                    <span class="skill-pill"><img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg" alt="R"
+                            loading="lazy" />
+                        R Language</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section-spacing relative">
+        <div class="section-header center relative">
+            <svg class="absolute section-blob" width="120" height="80" viewBox="0 0 120 80">
+                <path d="M20,45 C20,20 60,0 90,15 C120,30 130,70 100,80 C60,90 20,80 20,45 Z" fill="#e0e7ff" />
+            </svg>
+            <h2 class="text-serif relative z-10" data-animate="up">My Projects</h2>
+        </div>
+
+        <div class="projects-grid" data-animate="up">
+            <!-- Expense Dashboard Project Card -->
+            <div class="project-card card-flat" onclick="openProjectModal()">
+                <div class="project-image-container">
+                    <img src="image.png" alt="Expense Dashboard Screenshot" class="project-image" loading="lazy">
+                    <div class="project-overlay">
+                        <span class="btn-view">View Insights</span>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <div class="bento-badge badge-purple">Data Visualization</div>
+                    <h3>Personal Expense Dashboard</h3>
+                    <p>Advanced Excel-based tracking system with interactive financial insights.</p>
+                    <div class="project-tags">
+                        <span>Excel</span>
+                        <span>Data Analytics</span>
+                        <span>Visualization</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Modal -->
+        <div id="project-modal" class="modal">
+            <div class="modal-content glass-card">
+                <span class="close-modal" onclick="closeProjectModal()">&times;</span>
+                <div class="modal-grid">
+                    <div class="modal-left">
+                        <img src="image.png" alt="Project Full View" class="modal-large-image" loading="lazy">
+                        <div class="modal-video-container">
+                            <video controls class="modal-video">
+                                <source src="vid 1.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                     </div>
+                    <div class="modal-right">
+                        <div class="bento-badge badge-purple">Project Analysis</div>
+                        <h2 class="text-serif shine-hover">Personal Expense Dashboard</h2>
+                        <p class="modal-text">
+                            This project transforms raw financial data into a sophisticated visualization system. Using
+                            Pivot Tables and advanced Excel functions, it provides a holistic view of personal finances.
+                        </p>
 
-                    <div class="bento-item bento-compact" data-reveal>
-                        <h3>Innate Skills</h3>
-                        <p class="accent" style="font-size: 1.1rem; font-weight: 600;">Creativity</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <span class="metric-label">Total Income</span>
+                                <span class="metric-value text-green">₹54,754</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Total Expense</span>
+                                <span class="metric-value text-orange">₹56,963</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Net Balance</span>
+                                <span class="metric-value highlight-purple-text">-₹2,209</span>
+                            </div>
+                        </div>
 
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <h2 class="section-title" data-reveal>Skills & Tools</h2>
-            <div class="skills-grid">
-                <div class="skill-category" data-reveal>
-                    <h3>Languages</h3>
-                    <div class="skill-tags">
-                        <span>Java</span>
-                        <span>Python</span>
-                        <span>HTML</span>
+                        <div class="project-highlights">
+                            <h4>Project Highlights</h4>
+                            <ul>
+                                <li><i data-lucide="check-circle" class="icon-inline"></i> Categorized tracking for 15+
+                                    expense types</li>
+                                <li><i data-lucide="check-circle" class="icon-inline"></i> Dynamic pie chart for
+                                    distribution analysis</li>
+                                <li><i data-lucide="check-circle" class="icon-inline"></i> Automated balance and ratio
+                                    calculations</li>
+                                <li><i data-lucide="check-circle" class="icon-inline"></i> Clean, user-friendly
+                                    interface design</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <div class="skill-category" data-reveal>
-                    <h3>Tools</h3>
-                    <div class="skill-tags">
-                        <span>Excel</span>
-                        <span>ChatGPT</span>
-                        <span>Antigravity</span>
-                        <span>VS Code</span>
-                        <span>AI Studio</span>
-                    </div>
-                </div>
-                <div class="skill-category" data-reveal>
-                    <h3>Currently Learning</h3>
-                    <div class="skill-tags learning">
-                        <span>Power BI</span>
-                        <span>Python Libraries</span>
-                        <span>R Language</span>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <h2 class="section-title" data-reveal>My Projects</h2>
-            <div class="project-card placeholder" data-reveal>
-                <div class="project-content">
-                    <h3>Coming Soon...</h3>
-                    <p>I may not have projects to showcase yet, but my learning journey is in progress. This section
-                        will soon be filled with my work </p>
-                    <p class="accent stay-tuned" style="font-size: 1.1rem; font-weight: 600;">stay tuned!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <h2 class="section-title" data-reveal>Get in Touch</h2>
-            <div class="contact-card" data-reveal>
-                <div class="contact-info">
-                    <h3>The Connection</h3>
-                    <p>I’m open to beginner-level opportunities and learning collaborations in data science and related
-                        fields.</p>
-                    <p class="email">pranamchand@gmail.com</p>
-                    <div class="social-links">
-                        <a href="https://github.com/Pranamchand" target="_blank" aria-label="GitHub">
-                            <i data-lucide="github"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/pranamchand" target="_blank" aria-label="LinkedIn">
-                            <i data-lucide="linkedin"></i>
-                        </a>
+                <!-- Live Workbook Section -->
+                <div class="modal-full-width">
+                    <div class="section-divider"></div>
+                    <div class="live-workbook-header">
+                        <div class="bento-badge badge-green">Live View</div>
+                        <h3 class="text-serif shine-hover">Interactive Workbook</h3>
+                        <p>Explore the live data and analysis directly in the embedded Excel sheet below.</p>
+                    </div>
+                    <div class="iframe-container glass-card">
+                        <iframe width="100%" height="650" frameborder="0" scrolling="no"
+                            src="https://1drv.ms/x/c/3fc5cf85362a9757/IQTXH2uraacCTKOGbd239FdMAbLfGAJ70etEiM_E5GtMi3k?em=2&AllowTyping=True&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True"></iframe>
                     </div>
                 </div>
-                <form class="contact-form" id="contact-form">
-                    <div class="form-group">
-                        <input type="text" id="name" name="from_name" placeholder="Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="reply_to" placeholder="Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="submit-btn">Send Message</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <p>© 2026 Pranam Chand —for clearance my Official Govt. recognized full name is: Pranam Kumar Chand</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function () {
-            emailjs.init("akVCUcwT8nXrAj9Bq");
-        })();
-    </script>
-    <script src="script.js"></script>
+    <!-- Contact Section -->
+    <section id="contact" class="section-spacing relative">
+        <div class="contact-grid relative z-10">
+            <div class="contact-info-card" data-animate="up">
+                <div class="relative inline-block">
+                    <svg class="absolute section-blob" style="top:-20px; left:-30px;" width="110" height="110"
+                        viewBox="0 0 110 110">
+                        <circle cx="55" cy="55" r="45" fill="#fecdd3" />
+                    </svg>
+                    <h2 class="relative z-10">The <span class="text-serif">Connection</span></h2>
+                </div>
+                <p class="subtitle mt-4 relative z-10">I’m open to beginner-level opportunities and learning
+                    collaborations in data science
+                    and related fields.</p>
+
+                <div class="contact-detail">
+                    <div class="detail-icon icon-circle"><i data-lucide="mail"></i></div>
+                    <div>
+                        <span class="detail-label">Email me</span>
+                        <a href="mailto:pranamchand@gmail.com" class="detail-value">pranamchand@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="social-pills">
+                    <a href="https://github.com/Pranamchand" target="_blank"
+                        class="social-icon-btn github-btn magnetic-btn" title="GitHub">
+                        <svg viewBox="0 0 128 128" width="30" height="30" fill="currentColor">
+                            <path
+                                d="M64 0C28.7 0 0 28.7 0 64c0 28.3 18.3 52.3 43.7 60.8 3.2.6 4.4-1.4 4.4-3.1 0-1.5-.1-5.5-.1-10.8-17.8 3.9-21.6-8.6-21.6-8.6-2.9-7.4-7.1-9.4-7.1-9.4-5.8-4 .4-3.9 .4-3.9 6.4.5 9.8 6.6 9.8 6.6 5.7 9.8 15 7 18.6 5.3 .6-4.1 2.2-7 4-8.6-14.2-1.6-29.2-7.1-29.2-31.7 0-7 2.5-12.7 6.6-17.2-.7-1.6-2.9-8.1 .6-17 0 0 5.4-1.7 17.7 6.6 5.1-1.4 10.6-2.1 16.1-2.1 5.5 0 11 .7 16.1 2.1 12.3-8.3 17.7-6.6 17.7-6.6 3.5 8.9 1.3 15.4 .6 17 4.1 4.5 6.6 10.2 6.6 17.2 0 24.7-15 30.1-29.3 31.7 2.3 1.9 4.3 5.8 4.3 11.7 0 8.5-.1 15.3-.1 17.4 0 1.7 1.1 3.7 4.5 3.1C109.8 116.3 128 92.3 128 64c0-35.3-28.7-64-64-64z" />
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/pranamchand" target="_blank"
+                        class="social-icon-btn linkedin-btn magnetic-btn" title="LinkedIn">
+                        <svg viewBox="0 0 128 128" width="28" height="28" fill="currentColor">
+                            <path
+                                d="M116 3H12C7.03 3 3 7.03 3 12v104c0 4.97 4.03 9 9 9h104c4.97 0 9-4.03 9-9V12c0-4.97-4.03-9-9-9zM39 104H22V48h17v56zM30.5 40.5c-5.52 0-10-4.48-10-10s4.48-10 10-10 10 4.48 10 10-4.48 10-10 10zM106 104H89V77.1c0-6.41-.12-14.65-8.93-14.65-8.94 0-10.31 6.99-10.31 14.19V104H53V48h16v7.66h.22c2.23-4.22 7.68-8.68 15.82-8.68 16.92 0 20.06 11.13 20.06 25.6V104z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-form-card shadow-card" data-animate="up" style="animation-delay: 0.1s">
+                <h3 class="shine-hover">Send a message</h3>
+                <form id="contact-form" class="clean-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="from_name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="reply_to" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="How can I help you?" rows="4"
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-pill-dark btn-block btn-hover-color">
+                        Send Message <i data-lucide="send"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="clean-footer">
+    <div class="footer-bottom">
+        <p>© 2026 Pranam Chand — For clarity, my official government-recognized full name is:<strong> Pranam Kumar
+                Chand</strong></p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+    (function () {
+        emailjs.init("akVCUcwT8nXrAj9Bq");
+    })();
+</script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="script.js"></script>
 </body>
 
 </html>
-
