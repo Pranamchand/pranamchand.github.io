@@ -24,7 +24,7 @@ requestAnimationFrame(raf)
 // Custom Ambient Cursor Glow Logic
 const cursorGlow = document.querySelector('.cursor-glow');
 
-if(cursorGlow) {
+if (cursorGlow) {
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let glowX = mouseX;
@@ -39,14 +39,14 @@ if(cursorGlow) {
     function animateGlow() {
         let distX = mouseX - glowX;
         let distY = mouseY - glowY;
-        
+
         // 0.06 provides a very soft, fluid lag that feels gentle
-        glowX += distX * 0.06; 
+        glowX += distX * 0.06;
         glowY += distY * 0.06;
-        
+
         cursorGlow.style.left = `${glowX}px`;
         cursorGlow.style.top = `${glowY}px`;
-        
+
         requestAnimationFrame(animateGlow);
     }
     animateGlow();
@@ -65,7 +65,7 @@ const navLinks = document.querySelectorAll('.nav-pill a');
 
 window.addEventListener('scroll', () => {
     let current = '';
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         if (pageYOffset >= sectionTop - 150) {
@@ -85,10 +85,10 @@ window.addEventListener('scroll', () => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
-        
+
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
             targetElement.scrollIntoView({
@@ -118,7 +118,7 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         const preloader = document.getElementById('preloader');
         if (preloader) preloader.classList.add('hidden');
-        
+
         // Start observing elements for reveal animation slightly after preloader starts hiding
         setTimeout(() => {
             document.querySelectorAll('[data-animate="up"]').forEach(el => {
@@ -131,15 +131,15 @@ window.addEventListener('load', () => {
 // Form Submission using EmailJS
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
-        
+
         submitBtn.innerHTML = 'Sending...';
         submitBtn.disabled = true;
-        
+
         // Since EmailJS is used in the original template, we mock the call if IDs weren't found
         // In a real app the user would supply their Service ID and Template ID. 
         if (typeof emailjs !== 'undefined') {
@@ -171,7 +171,7 @@ if (contactForm) {
 }
 
 // Typing Effect for Hero Badge
-const phrases = ["Data Science student", "Aspiring Data analytics", "AI enthusiasts"];
+const phrases = ["Data Science student", "Aspiring Data Scientist", "AI enthusiasts"];
 let currentPhraseIndex = 0;
 let isDeleting = false;
 let currentText = "";
@@ -216,10 +216,10 @@ function openProjectModal() {
     if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden'; // Lock scroll
-        
+
         // Re-initialize icons for the modal content
         lucide.createIcons();
-        
+
         // Refresh intersection observer for elements inside modal if needed
         setTimeout(() => {
             const modalAnimates = modal.querySelectorAll('[data-animate="up"]');
