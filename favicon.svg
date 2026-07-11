@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <!-- Soft yellow blob background to match the website's light cream/yellow tones -->
+    <path d="M20,50 C20,15 60,10 80,30 C100,50 85,90 50,90 C15,90 20,85 20,50 Z" fill="#fef08a"/>
+    <!-- Light purple accent circle -->
+    <circle cx="25" cy="30" r="10" fill="#e0e7ff"/>
+    <!-- PC text in Serif matching the website fonts -->
+    <text x="52" y="65" font-family="'DM Serif Display', Georgia, serif" font-size="45" font-weight="800" fill="#111827" text-anchor="middle">PC</text>
+</svg>
