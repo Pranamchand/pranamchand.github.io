@@ -1,3 +1,35 @@
+// ─── Day / Night Mode Toggle ─────────────────────────────────
+// Apply saved theme IMMEDIATELY (before paint) to avoid flash
+(function () {
+    const saved = localStorage.getItem('portfolio-theme');
+    if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
+
+// Wire up the toggle button after DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (!toggleBtn) return;
+
+    toggleBtn.addEventListener('click', () => {
+        const root = document.documentElement;
+        const isDark = root.getAttribute('data-theme') === 'dark';
+
+        // Add transitioning class for smooth fade, remove after animation completes
+        root.classList.add('theme-transitioning');
+        setTimeout(() => root.classList.remove('theme-transitioning'), 500);
+
+        if (isDark) {
+            root.removeAttribute('data-theme');
+            localStorage.setItem('portfolio-theme', 'light');
+        } else {
+            root.setAttribute('data-theme', 'dark');
+            localStorage.setItem('portfolio-theme', 'dark');
+        }
+    });
+});
+
 // Initialize Lucide icons
 lucide.createIcons();
 
