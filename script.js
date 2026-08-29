@@ -91,27 +91,49 @@ if (cursorGlow) {
     });
 }
 
-// Active nav link update on scroll
+// Active nav link & Header Scroll Effect (Throttled with requestAnimationFrame for 60/120fps smoothness)
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav-pill a');
+const headerEl = document.querySelector('.header-container');
 
-window.addEventListener('scroll', () => {
+let scrollTicking = false;
+function updateOnScroll() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Header shadow / compact effect
+    if (headerEl) {
+        if (scrollY > 50) {
+            headerEl.classList.add('scrolled');
+        } else {
+            headerEl.classList.remove('scrolled');
+        }
+    }
+
+    // Active nav indicator
     let current = '';
-
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        if (pageYOffset >= sectionTop - 150) {
+        if (scrollY >= sectionTop - 160) {
             current = section.getAttribute('id');
         }
     });
 
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href').includes(current)) {
+        if (link.getAttribute('href') === `#${current}`) {
             link.classList.add('active');
         }
     });
-});
+
+    scrollTicking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+        window.requestAnimationFrame(updateOnScroll);
+        scrollTicking = true;
+    }
+}, { passive: true });
 
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -252,6 +274,12 @@ function openProjectModal() {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden'; // Lock scroll
 
+        // Lazy-load workbook iframe only when modal opens to save initial bandwidth and load time
+        const workbookIframe = modal.querySelector('iframe[data-src]');
+        if (workbookIframe && !workbookIframe.getAttribute('src')) {
+            workbookIframe.setAttribute('src', workbookIframe.getAttribute('data-src'));
+        }
+
         // Re-initialize icons for the modal content
         lucide.createIcons();
 
@@ -334,16 +362,6 @@ window.addEventListener('keydown', (e) => {
         closeProjectModal();
         closeEdaModal();
         closeDashboardModal();
-    }
-});
-
-// Header Scroll Effect
-const header = document.querySelector('.header-container');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
     }
 });
 
