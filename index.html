@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pranam Chand — macOS Data Science Portfolio</title>
+    <title>Pranam Chand</title>
     <meta
       name="description"
       content="Explore Pranam Chand's interactive macOS Data Science portfolio featuring 16 analytics & ML projects, Power BI dashboards, 18 certifications, and Arther AI."
@@ -19,7 +19,7 @@
     />
     <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#0b0d13" />
-    <meta name="application-name" content="Pranam Chand — macOS Data Science Portfolio" />
+    <meta name="application-name" content="Pranam Chand" />
     <meta name="apple-mobile-web-app-title" content="Pranam Chand" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -30,8 +30,8 @@
     <!-- OpenGraph Social Share Cards -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:site_name" content="Pranam Chand — macOS Data Science Portfolio" />
-    <meta property="og:title" content="Pranam Chand — macOS Data Science Portfolio" />
+    <meta property="og:site_name" content="Pranam Chand" />
+    <meta property="og:title" content="Pranam Chand" />
     <meta
       property="og:description"
       content="Explore Pranam Chand's interactive macOS Data Science portfolio featuring 16 analytics & ML projects, Power BI dashboards, 18 certifications, and Arther AI."
@@ -47,7 +47,7 @@
 
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pranam Chand — macOS Data Science Portfolio" />
+    <meta name="twitter:title" content="Pranam Chand" />
     <meta
       name="twitter:description"
       content="Explore Pranam Chand's interactive macOS Data Science portfolio featuring 16 analytics & ML projects, Power BI dashboards, 18 certifications, and Arther AI."
@@ -250,5 +250,29 @@
       </main>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      (function () {
+        try {
+          var isViteDev = Boolean(document.querySelector('script[src*="@vite/client"]'));
+          var rawMain = document.querySelector('script[src="/src/main.tsx"]');
+          if (!isViteDev && rawMain) {
+            rawMain.remove();
+            var iconLinks = document.querySelectorAll('link[href^="/favicon"], link[href="/site.webmanifest"]');
+            for (var i = 0; i < iconLinks.length; i++) {
+              var href = iconLinks[i].getAttribute('href');
+              if (href) iconLinks[i].setAttribute('href', './public' + href);
+            }
+            var css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = './gh-pages-bundle/app.css';
+            document.head.appendChild(css);
+            var js = document.createElement('script');
+            js.type = 'module';
+            js.src = './gh-pages-bundle/app.js';
+            document.body.appendChild(js);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </body>
 </html>

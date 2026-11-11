@@ -28,6 +28,13 @@ Build for production:
 npm run build
 ```
 
+## GitHub Pages Deployment
+
+This repository works with both GitHub Pages deployment modes:
+
+1. **Direct Branch Deployment (`main` / `root`)**: Pre-compiled assets in `gh-pages-bundle/` are loaded automatically when GitHub Pages serves the root branch directly. Run `npm run build` before committing if you make local code changes.
+2. **GitHub Actions Deployment**: A workflow is included at `.github/workflows/deploy.yml` if you prefer setting **Settings -> Pages -> Source** to **GitHub Actions**.
+
 ## Environment Variables
 
 Optional environment variables can be added to a `.env` file in the root directory (see `.env.example`):

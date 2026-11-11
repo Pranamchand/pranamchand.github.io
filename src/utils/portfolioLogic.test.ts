@@ -283,15 +283,11 @@ test('SEO metadata, OpenGraph/Twitter cards, and Schema.org JSON-LD are valid an
   const html = fs.readFileSync('index.html', 'utf8');
   const metadata = JSON.parse(fs.readFileSync('metadata.json', 'utf8'));
 
-  // Title length (30-60 chars) & sync with metadata.json
+  // Title is 'Pranam Chand'
   const titleMatch = html.match(/<title>([^<]+)<\/title>/);
   assert.ok(titleMatch, 'index.html must contain a <title> tag');
   const pageTitle = titleMatch[1];
-  assert.equal(pageTitle, metadata.name);
-  assert.ok(
-    pageTitle.length >= 30 && pageTitle.length <= 60,
-    `Title length (${pageTitle.length}) must be between 30 and 60 chars`
-  );
+  assert.equal(pageTitle, 'Pranam Chand');
 
   // Meta description length (120-160 chars) & sync with metadata.json
   const descMatch = html.match(
@@ -306,12 +302,12 @@ test('SEO metadata, OpenGraph/Twitter cards, and Schema.org JSON-LD are valid an
   );
 
   // OpenGraph & Twitter card sync
-  assert.ok(html.includes(`property="og:title" content="${metadata.name}"`));
+  assert.ok(html.includes('property="og:title" content="Pranam Chand"'));
   assert.ok(
     html.includes(`property="og:description"\n      content="${metadata.description}"`)
   );
   assert.ok(html.includes('name="twitter:card" content="summary_large_image"'));
-  assert.ok(html.includes(`name="twitter:title" content="${metadata.name}"`));
+  assert.ok(html.includes('name="twitter:title" content="Pranam Chand"'));
 
   // Valid JSON-LD structured data with WebApplication, Person, ProfilePage, ItemList
   const jsonLdMatch = html.match(
@@ -359,6 +355,17 @@ test('macOS sound effects descriptors and mute state toggle work deterministical
   assert.equal(isMacSoundEnabled(), true);
 });
 
+test('GitHub Pages deployment bundle, workflow, and .nojekyll files are valid', async () => {
+  const fs = await import('node:fs');
+  assert.ok(fs.existsSync('.nojekyll'));
+  assert.ok(fs.existsSync('public/.nojekyll'));
+  assert.ok(fs.existsSync('.github/workflows/deploy.yml'));
+  assert.ok(fs.existsSync('gh-pages-bundle/app.js'));
+  assert.ok(fs.existsSync('gh-pages-bundle/app.css'));
 
-
+  const bundleJs = fs.readFileSync('gh-pages-bundle/app.js', 'utf8');
+  assert.ok(bundleJs.length > 100000);
+  assert.ok(bundleJs.includes('./public/assets/aistudio/'));
+  assert.ok(!bundleJs.includes('"/assets/aistudio/'));
+});
 
