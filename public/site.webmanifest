@@ -1,0 +1,21 @@
+{
+  "name": "Pranam Chand — macOS Data Science Portfolio",
+  "short_name": "Pranam Chand",
+  "description": "Explore Pranam Chand's interactive macOS Data Science portfolio featuring 16 analytics & ML projects, Power BI dashboards, 18 certifications, and Arther AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0d13",
+  "theme_color": "#0b0d13",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

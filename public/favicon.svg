@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="128" y1="0" x2="128" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F4F4F6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Apple-style squircle badge -->
+  <rect x="6" y="6" width="244" height="244" rx="56" fill="url(#bgGrad)" stroke="#E4E4E7" stroke-width="4" />
+
+  <!-- Continuous monoline calligraphic 'P' loop mark (Pranam Chand) -->
+  <path
+    d="M 83 220
+       C 74 176, 70 132, 86 92
+       C 103 50, 146 34, 177 45
+       C 203 54, 204 89, 182 114
+       C 159 139, 114 144, 79 125
+       C 66 118, 57 109, 51 101"
+    stroke="#1D1D1F"
+    stroke-width="19"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Optical balance accent mark -->
+  <circle cx="214" cy="49" r="5.5" stroke="#1D1D1F" stroke-width="2.4" />
+  <circle cx="214" cy="49" r="1.4" fill="#1D1D1F" />
+</svg>

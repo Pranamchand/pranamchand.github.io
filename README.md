@@ -1,11 +1,43 @@
-<div align="center">
+# Pranam Chand — Portfolio
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Personal portfolio website built with a macOS desktop interface. Showcases my data analytics, business intelligence, and machine learning projects, along with my resume and certifications.
 
-  <h1>Built with AI Studio</h2>
+## Stack
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- React 19 + TypeScript + Vite
+- Tailwind CSS v4
+- Express (`server.ts`) for optional API routes
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Local Setup
 
-</div>
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server (starts on `http://localhost:3000`):
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Environment Variables
+
+Optional environment variables can be added to a `.env` file in the root directory (see `.env.example`):
+
+- `GEMINI_API_KEY` — Used by the server-side assistant endpoint (`/api/ai/chat`). The app falls back to local portfolio search if no key is configured.
+- `VITE_WEB3FORMS_ACCESS_KEY` — Optional key for the contact form.
+
+## Structure
+
+- `src/data/content.ts` — Portfolio projects, skills, certifications, and links
+- `src/windows/` — Desktop window views (About, Projects, Resume, Terminal, Contact, etc.)
+- `src/components/` — Window manager, dock, menu bar, and desktop icons
+- `public/assets/` — Static images, icons, and resume PDF
