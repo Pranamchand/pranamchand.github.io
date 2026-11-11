@@ -283,11 +283,11 @@ test('SEO metadata, OpenGraph/Twitter cards, and Schema.org JSON-LD are valid an
   const html = fs.readFileSync('index.html', 'utf8');
   const metadata = JSON.parse(fs.readFileSync('metadata.json', 'utf8'));
 
-  // Title is 'Pranam Chand'
+  // Title is 'Pranam chand'
   const titleMatch = html.match(/<title>([^<]+)<\/title>/);
   assert.ok(titleMatch, 'index.html must contain a <title> tag');
   const pageTitle = titleMatch[1];
-  assert.equal(pageTitle, 'Pranam Chand');
+  assert.equal(pageTitle, 'Pranam chand');
 
   // Meta description length (120-160 chars) & sync with metadata.json
   const descMatch = html.match(
@@ -302,12 +302,12 @@ test('SEO metadata, OpenGraph/Twitter cards, and Schema.org JSON-LD are valid an
   );
 
   // OpenGraph & Twitter card sync
-  assert.ok(html.includes('property="og:title" content="Pranam Chand"'));
+  assert.ok(html.includes('property="og:title" content="Pranam chand"'));
   assert.ok(
     html.includes(`property="og:description"\n      content="${metadata.description}"`)
   );
   assert.ok(html.includes('name="twitter:card" content="summary_large_image"'));
-  assert.ok(html.includes('name="twitter:title" content="Pranam Chand"'));
+  assert.ok(html.includes('name="twitter:title" content="Pranam chand"'));
 
   // Valid JSON-LD structured data with WebApplication, Person, ProfilePage, ItemList
   const jsonLdMatch = html.match(
