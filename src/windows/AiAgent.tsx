@@ -156,23 +156,22 @@ export const AiAgentWindow: React.FC = () => {
     setIsThinking(true);
 
     try {
+      const customApiUrl = (
+        import.meta as unknown as { env?: Record<string, string | undefined> }
+      ).env?.VITE_AGENT_API_URL;
+
       const isStaticHost =
         typeof window !== 'undefined' &&
-        window.location.hostname.endsWith('.github.io');
-
-      const endpoints = isStaticHost
-        ? [
-            'https://ais-pre-djgmwteq2m3tnaxeqzbhqk-505372511230.asia-northeast1.run.app/api/agent/chat',
-          ]
-        : ['/api/agent/chat'];
+        window.location.hostname.endsWith('.github.io') &&
+        !customApiUrl;
 
       let data: { reply?: string; sources?: string[] } | null = null;
 
-      for (const endpoint of endpoints) {
+      if (!isStaticHost) {
         try {
-          const response = await fetch(endpoint, {
+          const response = await fetch(customApiUrl || '/api/agent/chat', {
             method: 'POST',
-            signal: AbortSignal.timeout(4500),
+            signal: AbortSignal.timeout(8000),
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               message: question,
@@ -185,10 +184,9 @@ export const AiAgentWindow: React.FC = () => {
               reply?: string;
               sources?: string[];
             };
-            if (data?.reply?.trim()) break;
           }
         } catch {
-          // Proceed to local RAG synthesis if remote endpoint is unreachable
+          // Fall back to local RAG synthesis
         }
       }
 

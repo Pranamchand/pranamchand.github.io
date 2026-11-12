@@ -250,6 +250,8 @@ test('Arther RAG engine retrieves relevant chunks and synthesizes distinct answe
     'What are his favorite movies and shows?',
     'Does he know Python?',
     'What are his career goals?',
+    'what is he currently doing',
+    'ok what is 2+2',
   ];
 
   const answers = queries.map((q) =>
@@ -264,6 +266,9 @@ test('Arther RAG engine retrieves relevant chunks and synthesizes distinct answe
   assert.ok(answers[2].includes('Apple Global Retail Analytics'));
   assert.ok(answers[3].includes('Cuttack, Odisha'));
   assert.ok(answers[4].includes("Omniscient Reader's Viewpoint"));
+  assert.ok(answers[8].includes('Ravenshaw University'));
+  assert.ok(!answers[8].includes('Important Skill Accuracy Note'));
+  assert.ok(answers[9].includes('2 + 2 = 4'));
 
   const artherSpotlight = searchSpotlight('Arther');
   assert.ok(artherSpotlight.some((r) => r.id === 'app-ai-agent' && r.title === 'Arther'));

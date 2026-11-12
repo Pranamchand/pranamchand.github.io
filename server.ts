@@ -60,20 +60,20 @@ async function callGeminiWithKey(
   const conversationTranscript = [
     ...history
       .slice(-6)
-      .map((h) => `${h.role === 'user' ? 'Visitor' : 'Pranam AI'}: ${h.content}`),
+      .map((h) => `${h.role === 'user' ? 'Visitor' : 'Arther'}: ${h.content}`),
     `Visitor: ${message}`,
   ].join('\n\n');
 
   const response = await withTimeout(
     ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: 'gemini-3.1-flash-lite',
       contents: conversationTranscript,
       config: {
         systemInstruction,
-        thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
+        thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
       },
     }),
-    6000
+    5000
   );
 
   const text = response.text?.trim();
@@ -85,6 +85,7 @@ async function callGeminiWithKey(
 
 async function callGroq(
   apiKey: string,
+  model: string,
   systemInstruction: string,
   message: string,
   history: ChatTurn[]
@@ -97,15 +98,15 @@ async function callGroq(
 
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    signal: AbortSignal.timeout(6000),
+    signal: AbortSignal.timeout(4500),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model,
       messages,
-      max_tokens: 420,
+      max_tokens: 260,
     }),
   });
 
@@ -119,48 +120,6 @@ async function callGroq(
   };
   const reply = data.choices?.[0]?.message?.content?.trim();
   if (!reply) throw new Error('Empty Groq response');
-  return reply;
-}
-
-async function callNvidia(
-  apiKey: string,
-  systemInstruction: string,
-  message: string,
-  history: ChatTurn[]
-): Promise<string> {
-  const messages = [
-    { role: 'system', content: systemInstruction },
-    ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
-    { role: 'user', content: message },
-  ];
-
-  const res = await fetch(
-    'https://integrate.api.nvidia.com/v1/chat/completions',
-    {
-      method: 'POST',
-      signal: AbortSignal.timeout(6000),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'meta/llama-3.1-70b-instruct',
-        messages,
-        max_tokens: 420,
-      }),
-    }
-  );
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`NVIDIA HTTP ${res.status}: ${errText}`);
-  }
-
-  const data = (await res.json()) as {
-    choices?: { message?: { content?: string } }[];
-  };
-  const reply = data.choices?.[0]?.message?.content?.trim();
-  if (!reply) throw new Error('Empty NVIDIA response');
   return reply;
 }
 
@@ -178,7 +137,7 @@ async function callCohere(
 
   const res = await fetch('https://api.cohere.com/v2/chat', {
     method: 'POST',
-    signal: AbortSignal.timeout(6000),
+    signal: AbortSignal.timeout(5000),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
@@ -205,11 +164,39 @@ async function callCohere(
 function buildProviderPool(): ProviderSlot[] {
   const pool: ProviderSlot[] = [];
 
+  if (process.env.GROQ_API_KEY) {
+    const key = process.env.GROQ_API_KEY;
+    pool.push({
+      id: 'groq-primary',
+      name: 'Groq GPT-OSS 120B',
+      cooldownUntil: 0,
+      call: (sys, msg, hist) =>
+        callGroq(key, 'openai/gpt-oss-120b', sys, msg, hist),
+    });
+    pool.push({
+      id: 'groq-secondary',
+      name: 'Groq Qwen 3.8 27B',
+      cooldownUntil: 0,
+      call: (sys, msg, hist) =>
+        callGroq(key, 'qwen/qwen3.8-27b', sys, msg, hist),
+    });
+  }
+
+  if (process.env.COHERE_API_KEY) {
+    const key = process.env.COHERE_API_KEY;
+    pool.push({
+      id: 'cohere',
+      name: 'Cohere Command-R',
+      cooldownUntil: 0,
+      call: (sys, msg, hist) => callCohere(key, sys, msg, hist),
+    });
+  }
+
   if (process.env.GEMINI_API_KEY) {
     const key = process.env.GEMINI_API_KEY;
     pool.push({
       id: 'gemini-primary',
-      name: 'Gemini',
+      name: 'Gemini 3.1 Flash Lite',
       cooldownUntil: 0,
       call: (sys, msg, hist) => callGeminiWithKey(key, sys, msg, hist),
     });
@@ -222,39 +209,9 @@ function buildProviderPool(): ProviderSlot[] {
     const key = process.env.GEMINI_FALLBACK_API_KEY;
     pool.push({
       id: 'gemini-fallback',
-      name: 'Gemini (Key 2)',
+      name: 'Gemini 3.1 Flash Lite',
       cooldownUntil: 0,
       call: (sys, msg, hist) => callGeminiWithKey(key, sys, msg, hist),
-    });
-  }
-
-  if (process.env.GROQ_API_KEY) {
-    const key = process.env.GROQ_API_KEY;
-    pool.push({
-      id: 'groq',
-      name: 'Groq Llama 3.3',
-      cooldownUntil: 0,
-      call: (sys, msg, hist) => callGroq(key, sys, msg, hist),
-    });
-  }
-
-  if (process.env.NVIDIA_API_KEY) {
-    const key = process.env.NVIDIA_API_KEY;
-    pool.push({
-      id: 'nvidia',
-      name: 'NVIDIA NIM',
-      cooldownUntil: 0,
-      call: (sys, msg, hist) => callNvidia(key, sys, msg, hist),
-    });
-  }
-
-  if (process.env.COHERE_API_KEY) {
-    const key = process.env.COHERE_API_KEY;
-    pool.push({
-      id: 'cohere',
-      name: 'Cohere Command-R',
-      cooldownUntil: 0,
-      call: (sys, msg, hist) => callCohere(key, sys, msg, hist),
     });
   }
 
