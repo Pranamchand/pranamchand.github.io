@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI, ThinkingLevel } from '@google/genai';
@@ -303,9 +304,23 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(__dirname, 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    const distIndex = path.join(distPath, 'index.html');
+    const publicPath = path.join(__dirname, 'public');
+    const bundlePath = path.join(__dirname, 'gh-pages-bundle');
+
+    if (fs.existsSync(distIndex)) {
+      app.use(express.static(distPath));
+    }
+    app.use('/gh-pages-bundle', express.static(bundlePath));
+    app.use('/public', express.static(publicPath));
+    app.use(express.static(publicPath));
+
+    app.use((_req, res) => {
+      if (fs.existsSync(distIndex)) {
+        res.sendFile(distIndex);
+      } else {
+        res.sendFile(path.join(__dirname, 'index.html'));
+      }
     });
   }
 

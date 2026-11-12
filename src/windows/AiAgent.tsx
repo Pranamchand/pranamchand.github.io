@@ -160,18 +160,23 @@ export const AiAgentWindow: React.FC = () => {
         import.meta as unknown as { env?: Record<string, string | undefined> }
       ).env?.VITE_AGENT_API_URL;
 
-      const isStaticHost =
+      const isGitHubPages =
         typeof window !== 'undefined' &&
-        window.location.hostname.endsWith('.github.io') &&
-        !customApiUrl;
+        window.location.hostname.endsWith('.github.io');
+
+      const candidateUrls = customApiUrl
+        ? [customApiUrl]
+        : isGitHubPages
+          ? ['https://pranamchand-github-io.onrender.com/api/agent/chat']
+          : ['/api/agent/chat'];
 
       let data: { reply?: string; sources?: string[] } | null = null;
 
-      if (!isStaticHost) {
+      for (const url of candidateUrls) {
         try {
-          const response = await fetch(customApiUrl || '/api/agent/chat', {
+          const response = await fetch(url, {
             method: 'POST',
-            signal: AbortSignal.timeout(8000),
+            signal: AbortSignal.timeout(isGitHubPages ? 4500 : 8000),
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               message: question,
@@ -184,9 +189,10 @@ export const AiAgentWindow: React.FC = () => {
               reply?: string;
               sources?: string[];
             };
+            if (data?.reply?.trim()) break;
           }
         } catch {
-          // Fall back to local RAG synthesis
+          // Fall back to local RAG synthesis if remote server is asleep or unreachable
         }
       }
 
