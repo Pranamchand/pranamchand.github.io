@@ -230,7 +230,7 @@ test('skills collection includes OpenCode, Codex, Zapier, YouTube Automation, Ge
   assert.equal(dlSkill?.category, 'Languages & Libraries');
 });
 
-test('Arther RAG engine retrieves relevant chunks from me.md knowledge base', () => {
+test('Arther RAG engine retrieves relevant chunks and synthesizes distinct answers for diverse queries', () => {
   const eduChunks = retrieveKnowledgeChunks(
     'What is Pranam studying at Ravenshaw University and what is his SGPA?'
   );
@@ -241,10 +241,29 @@ test('Arther RAG engine retrieves relevant chunks from me.md knowledge base', ()
   );
   assert.ok(eduAnswer.includes('7.76 SGPA'));
 
-  const careerChunks = retrieveKnowledgeChunks(
-    'What are Pranam career goals and internship interests?'
+  const queries = [
+    'Hello',
+    'Who are you?',
+    'Tell me about Apple Global Retail Analytics',
+    'Where is Pranam from?',
+    'What manhwa does he read?',
+    'What are his favorite movies and shows?',
+    'Does he know Python?',
+    'What are his career goals?',
+  ];
+
+  const answers = queries.map((q) =>
+    synthesizeLocalRagResponse(q, retrieveKnowledgeChunks(q, 3))
   );
-  assert.ok(careerChunks.some((c) => c.id === 'career-objectives'));
+  const uniqueAnswers = new Set(answers);
+  assert.equal(
+    uniqueAnswers.size,
+    queries.length,
+    'Every distinct query category must produce a unique answer on static GitHub Pages'
+  );
+  assert.ok(answers[2].includes('Apple Global Retail Analytics'));
+  assert.ok(answers[3].includes('Cuttack, Odisha'));
+  assert.ok(answers[4].includes("Omniscient Reader's Viewpoint"));
 
   const artherSpotlight = searchSpotlight('Arther');
   assert.ok(artherSpotlight.some((r) => r.id === 'app-ai-agent' && r.title === 'Arther'));

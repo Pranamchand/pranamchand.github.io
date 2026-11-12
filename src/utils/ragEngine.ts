@@ -463,15 +463,143 @@ ${contextText}`;
 }
 
 /**
- * Synthesizes a clean, accurate response directly from retrieved RAG chunks
- * as a zero-downtime fallback if all external LLM API keys hit rate limits.
+ * Synthesizes a clean, accurate, context-specific response directly from
+ * retrieved RAG chunks and PORTFOLIO_CONTENT so static deployments (such as
+ * GitHub Pages where no Node backend is running) answer every question
+ * distinctly and conversationally.
  */
 export function synthesizeLocalRagResponse(
   query: string,
   chunks: KnowledgeChunk[]
 ): string {
-  const q = query.toLowerCase();
+  const q = query.trim().toLowerCase();
 
+  if (!q) {
+    return `Hey! I'm Arther, Pranam Chand's personal portfolio assistant. You can ask me about his B.Sc. in Data Science at Ravenshaw University, his 16+ Data Analytics & ML projects, his technical skills, certifications, or his favorite manhwa and shows.`;
+  }
+
+  // 1. Conversational greetings / meta questions about Arther
+  if (
+    /^(hi|hello|hey|yo|hola|greetings|good\s*(morning|afternoon|evening)|sup)\b/.test(
+      q
+    ) &&
+    q.split(/\s+/).length <= 5
+  ) {
+    return `Hey there! I'm Arther, Pranam Chand's AI assistant. Ask me anything about his Data Science studies at Ravenshaw University, Power BI & ML projects, internships, technical skills, or hobbies!`;
+  }
+
+  if (
+    q.includes('who are you') ||
+    q.includes('what are you') ||
+    q.includes('your name') ||
+    (q.includes('arther') && !q.includes('pranam'))
+  ) {
+    return `I'm Arther, a custom RAG-based assistant built into Pranam Chand's macOS portfolio. I'm grounded in Pranam's verified profile, projects, academic background, and certifications to help visitors explore his work.`;
+  }
+
+  if (q.includes('thank') || q.includes('thx') || q.includes('awesome') || q.includes('cool')) {
+    return `You're very welcome! Feel free to ask about any specific project, skill, certificate, or how to get in touch with Pranam.`;
+  }
+
+  // 2. Check if the user is asking about a specific project from PORTFOLIO_CONTENT.projects
+  const matchedProjects = PORTFOLIO_CONTENT.projects.filter((proj) => {
+    const titleWords = proj.title
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter((w) => w.length > 3 && !['data', 'analysis', 'model', 'system', 'project', 'basic'].includes(w));
+    return (
+      q.includes(proj.title.toLowerCase()) ||
+      titleWords.some((w) => q.includes(w))
+    );
+  });
+
+  if (matchedProjects.length === 1) {
+    const p = matchedProjects[0];
+    const linkPart =
+      p.links.live && !p.links.live.includes('[ADD')
+        ? `Live App: ${p.links.live} | GitHub: ${p.links.github || ''}`
+        : `GitHub: ${p.links.github || ''}`;
+    const highlightsPart = p.caseStudy?.highlights?.length
+      ? ` Key highlights: ${p.caseStudy.highlights.slice(0, 2).join(' ')}`
+      : '';
+    return `${p.title} (${p.category}): ${p.description} Built with ${p.tags.join(', ')}.${highlightsPart} (${linkPart})`;
+  }
+
+  if (matchedProjects.length > 1 && matchedProjects.length <= 3 && !q.includes('all project')) {
+    return matchedProjects
+      .map(
+        (p) =>
+          `• ${p.title} (${p.tags.slice(0, 3).join(', ')}): ${p.description}`
+      )
+      .join('\n');
+  }
+
+  // 3. Specific category project questions (NLP, EDA, Power BI / Dashboards, ML, RAG / FastAPI)
+  if (q.includes('dashboard') || q.includes('power bi') || q.includes('bi project')) {
+    return `Pranam's featured Power BI & Dashboard projects include:\n• Apple Global Retail Analytics (SQL, Power BI, DAX — 1M+ retail rows analyzed)\n• Spotify User Behavior Dashboard (Power BI & EDA on listener habits)\n• Starbucks Retail Dashboard (product, store & regional performance)\n• Monday Coffee Market Analysis (SQL & BI expansion study across Indian cities)`;
+  }
+
+  if (q.includes('nlp') || q.includes('natural language') || q.includes('sentiment') || q.includes('recommendation')) {
+    return `Pranam's NLP & Recommendation projects include:\n• Basic Sentiment Analysis (Live on Streamlit — TF-IDF & Logistic Regression)\n• Movie Recommendation System (NLP TF-IDF & cosine similarity across 5,000+ films)\n• Book Recommendation System (Live on Streamlit — k-NN & cosine similarity)\n• Disaster Tweets Classification (Kaggle NLP competition — ~76% F1 score, #628 rank)`;
+  }
+
+  if (q.includes('eda') || q.includes('exploratory')) {
+    return `Pranam's Exploratory Data Analysis (EDA) projects include Telco Customer Churn Analysis, US Accidents Geospatial & Temporal EDA, UK Baby Names Analysis, and Anime Data Analysis—using Python, Pandas, NumPy, Matplotlib, and Seaborn to uncover actionable trends.`;
+  }
+
+  if (q.includes('rag') || q.includes('fastapi') || q.includes('api project') || q.includes('llm')) {
+    return `In AI & Backend APIs, Pranam has built:\n• Document Q&A RAG Application (using Retrieval-Augmented Generation, vector embeddings, LangChain, Mistral AI & Gemini APIs)\n• House Price Prediction API (ML inference service built with FastAPI)\n• Arther / Pranam AI (this portfolio's custom RAG assistant)`;
+  }
+
+  // 4. Specific skill / tool inquiries (including negative skill accuracy checks)
+  if (
+    q.includes('css') ||
+    q.includes('javascript') ||
+    q.includes('linux') ||
+    q.includes('deep learning')
+  ) {
+    return `For accuracy: while Pranam explores modern tools and built AI/ML projects, he explicitly clarifies that he does not claim established expertise in CSS, JavaScript, Linux, or Deep Learning. His core strengths are Python, SQL, R, Power BI, Tableau, Advanced Excel, Machine Learning, EDA, and RAG/GenAI.`;
+  }
+
+  if (q.includes('python') || q.includes('pandas') || q.includes('scikit')) {
+    return `Python is Pranam's primary programming language for Data Science, Exploratory Data Analysis (EDA), automation, and Machine Learning. He works extensively with Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, Statsmodels, SciPy, NLTK, FastAPI, and Streamlit.`;
+  }
+
+  if (q.includes('sql') || q.includes('database') || q.includes('mysql') || q.includes('postgres') || q.includes('oracle')) {
+    return `Pranam is skilled in SQL across MySQL, PostgreSQL, and Oracle SQL—using complex joins, CTEs, window functions, and aggregations for large-scale analytics such as his 1M+ row Apple Global Retail Analytics and Monday Coffee Market studies.`;
+  }
+
+  // 5. Location / Hometown / Languages / Age / Identity
+  if (
+    q.includes('where') ||
+    q.includes('location') ||
+    q.includes('live') ||
+    q.includes('from') ||
+    q.includes('city') ||
+    q.includes('state') ||
+    q.includes('cuttack') ||
+    q.includes('odisha') ||
+    q.includes('country')
+  ) {
+    return `Pranam Kumar Chand is based in Cuttack, Odisha, India, where he is pursuing his B.Sc. in Data Science (Honours) at Ravenshaw University (2025–2029). He speaks Odia (native), Hindi (fluent), and English (professional proficiency).`;
+  }
+
+  if (q.includes('language') && (q.includes('speak') || q.includes('know') || q.includes('odia') || q.includes('hindi') || q.includes('english'))) {
+    return `Pranam speaks three languages: Odia (Native Speaker), Hindi (Fluent), and English (Professional Proficiency). In programming, he codes in Python, SQL, R, and Java.`;
+  }
+
+  if (
+    q.includes('who is pranam') ||
+    q.includes('about pranam') ||
+    q.includes('introduce') ||
+    q.includes('bio') ||
+    q.includes('tell me about him') ||
+    q.includes('summary')
+  ) {
+    return `Pranam Kumar Chand (Pranam Chand) is a B.Sc. Data Science undergraduate at Ravenshaw University, Cuttack, Odisha (2025–2029, 7.76 SGPA in 1st semester). He specializes in Data Analytics, Power BI & Excel dashboards, Python EDA, Machine Learning, and RAG applications, with 16+ portfolio projects and 18 verified certifications.`;
+  }
+
+  // 6. Education / SGPA / Marks / University / Schooling
   if (
     q.includes('education') ||
     q.includes('university') ||
@@ -480,72 +608,157 @@ export function synthesizeLocalRagResponse(
     q.includes('studying') ||
     q.includes('sgpa') ||
     q.includes('gpa') ||
+    q.includes('cgpa') ||
+    q.includes('mark') ||
+    q.includes('score') ||
+    q.includes('percentage') ||
     q.includes('school') ||
-    q.includes('ravenshaw')
+    q.includes('ravenshaw') ||
+    q.includes('degree') ||
+    q.includes('semester')
   ) {
-    return `Pranam Kumar Chand is currently pursuing a B.Sc. in Data Science (Honours) at Ravenshaw University, Cuttack, Odisha (2025–2029), where he achieved a 7.76 SGPA in his 1st semester. Previously, he scored 89% in Higher Secondary (NIST, Balasore) and 91% in Secondary schooling (SACIE, Mayurbhanj).`;
+    return `Pranam is pursuing a B.Sc. in Data Science (Honours) at Ravenshaw University, Cuttack, Odisha (2025–2029), earning a 7.76 SGPA in his 1st semester. Previously, he scored 89% in Higher Secondary Science at NIST, Balasore, and 91% in Secondary Education at Sri Aurobindo Center of Integral Education (SACIE), Rairangpur.`;
   }
 
+  // 7. General Technical Skills
   if (
     q.includes('skill') ||
     q.includes('tech') ||
     q.includes('stack') ||
-    q.includes('tool') ||
-    q.includes('language')
+    q.includes('tool')
   ) {
-    return `Pranam's core technical stack includes Python (Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn), SQL (MySQL, PostgreSQL, Oracle), R, Power BI, Tableau, and Advanced Excel. In AI & engineering, he works with RAG, LangChain, Hugging Face, FastAPI, Streamlit, OpenCode, Codex, and Zapier.`;
+    return `Pranam's technical stack covers:\n• Languages & Databases: Python, SQL (MySQL, PostgreSQL, Oracle), R, Java\n• Analytics & BI: Power BI, Tableau, Advanced Excel, Statistics & EDA\n• ML & Data Science: Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, NLP (TF-IDF)\n• GenAI & Engineering: RAG, LangChain, Hugging Face, FastAPI, Streamlit, OpenCode, Codex, and Zapier.`;
   }
 
+  // 8. General Projects overview
   if (
     q.includes('project') ||
     q.includes('built') ||
-    q.includes('work') ||
-    q.includes('dashboard') ||
-    q.includes('ml')
+    q.includes('portfolio') ||
+    q.includes('ml') ||
+    q.includes('machine learning')
   ) {
-    return `Pranam has built 16+ Data Analytics, Machine Learning, and AI projects—including Apple Global Retail Analytics (1M+ rows in SQL & Power BI), Heart Disease Risk Assessment (Streamlit ML app), Book & Movie Recommendation Systems, Basic Sentiment Analysis, a FastAPI House Price Prediction API, and this RAG-powered Pranam AI assistant.`;
+    return `Pranam has built 16+ Data Analytics, BI, and Machine Learning projects, including:\n• Apple Global Retail Analytics (1M+ rows in SQL & Power BI)\n• Heart Disease Risk Assessment (Clinical ML app on Streamlit)\n• Book & Movie Recommendation Systems (Cosine similarity & TF-IDF)\n• Basic Sentiment Analysis & Disaster Tweets NLP (#628 on Kaggle)\n• FastAPI House Price Prediction API & RAG Document Q&A.`;
   }
 
+  // 9. Certifications, Internships & Competitions
   if (
     q.includes('certificat') ||
+    q.includes('credential') ||
     q.includes('internship') ||
     q.includes('ibm') ||
+    q.includes('microsoft') ||
+    q.includes('google') ||
     q.includes('achievement') ||
-    q.includes('kaggle')
+    q.includes('kaggle') ||
+    q.includes('hackathon') ||
+    q.includes('experience') ||
+    q.includes('work')
   ) {
-    return `Pranam completed the Data Analytics with AI Internship Program with IBM SkillsBuild & Edunet Foundation and holds 18 credentials across IBM SkillsBuild (AI & Data Fundamentals, IBM Granite, RAG, Multiagent Systems), Microsoft Learn (Fabric & Copilot for Power BI), Google Cloud, and Flipkart GRiD 8.0. He has also competed in 4 Kaggle competitions (ranking #628 in Disaster Tweets with a ~76% F1 score).`;
+    return `Pranam completed the Data Analytics with AI Internship Program with IBM SkillsBuild & Edunet Foundation (Mar 2026) and holds 18 verified credentials across IBM SkillsBuild (AI & Data Fundamentals, IBM Granite, RAG, Multiagent Systems), Microsoft Learn (Fabric & Copilot for Power BI), Google Cloud, Crucible Leaderboard (Matiks & Unstop), and MY Bharat. He also competed in 4 Kaggle competitions (#628 in Disaster Tweets).`;
   }
 
+  // 10. Career Goals & Hiring
   if (
     q.includes('career') ||
     q.includes('goal') ||
+    q.includes('objective') ||
     q.includes('hire') ||
     q.includes('looking for') ||
-    q.includes('future')
+    q.includes('future') ||
+    q.includes('ambition') ||
+    q.includes('role') ||
+    q.includes('job')
   ) {
-    return `Pranam is actively seeking Data Analyst and Data Science internship opportunities—especially in D2C and product-based companies—with the long-term goal of growing into an AI Engineer building practical, production-ready AI and analytics applications.`;
+    return `Pranam is actively seeking Data Analyst and Data Science internships—particularly in D2C and product-based companies—where he can apply SQL, Python, Power BI, and ML to real business problems while growing toward an AI Engineering career.`;
+  }
+
+  // 11. Manga / Manhwa / Anime / Cinema / Movies / Hobbies
+  if (
+    q.includes('manga') ||
+    q.includes('manhwa') ||
+    q.includes('webtoon') ||
+    q.includes('read')
+  ) {
+    return `Pranam is an avid manhwa and manga reader! His 24 top picks include Omniscient Reader's Viewpoint, The Greatest Estate Developer, The Beginning After the End, The Boxer, Revenge of the Iron-Blooded Sword Hound, Pick Me Up Infinite Gacha, Nano Machine, and The Legend of the Northern Blade. You can browse all 24 covers in the Manwha & Manga desktop app!`;
+  }
+
+  if (
+    q.includes('movie') ||
+    q.includes('cinema') ||
+    q.includes('show') ||
+    q.includes('series') ||
+    q.includes('watch') ||
+    q.includes('film')
+  ) {
+    return `Pranam's favorite movies, series, and anime in the Cinema app include Breaking Bad, Interstellar, Attack on Titan, Alice in Borderland, Game of Thrones, The 8 Show, Harry Potter, and Your Name.`;
   }
 
   if (
     q.includes('hobby') ||
     q.includes('hobbies') ||
     q.includes('interest') ||
-    q.includes('anime') ||
-    q.includes('manga')
+    q.includes('free time') ||
+    q.includes('fun') ||
+    q.includes('anime')
   ) {
-    return `Outside of data science and coding, Pranam enjoys watching anime, reading manga (like Omniscient Reader's Viewpoint) and books, photography, photo/video editing, and experimenting with emerging AI tools.`;
+    return `Outside of data science and coding, Pranam enjoys reading manhwa/manga (like Omniscient Reader's Viewpoint and The Greatest Estate Developer), watching anime and sci-fi/thriller series, photography, photo/video editing (Canva, GIMP, Filmora, CapCut), and experimenting with new AI tools.`;
   }
 
+  // 12. Contact / Links / Resume
   if (
     q.includes('contact') ||
     q.includes('email') ||
+    q.includes('mail') ||
     q.includes('reach') ||
     q.includes('linkedin') ||
-    q.includes('github')
+    q.includes('github') ||
+    q.includes('resume') ||
+    q.includes('cv')
   ) {
-    return `You can reach Pranam at ${PORTFOLIO_CONTENT.identity.email}, or connect with him on GitHub (${PORTFOLIO_CONTENT.identity.github}), LinkedIn (${PORTFOLIO_CONTENT.identity.linkedin}), and Kaggle (${PORTFOLIO_CONTENT.identity.kaggle}). You can also use the Mail app right here in the Dock!`;
+    return `You can reach Pranam via email at ${PORTFOLIO_CONTENT.identity.email}, view/download his resume in the Resume app, or connect on GitHub (${PORTFOLIO_CONTENT.identity.github}), LinkedIn (${PORTFOLIO_CONTENT.identity.linkedin}), and Kaggle (${PORTFOLIO_CONTENT.identity.kaggle}).`;
+  }
+
+  // 13. Dynamic line-level extraction from retrieved KnowledgeChunks for any other specific question
+  const queryTokens = tokenizeQuery(query);
+  const candidateLines: { line: string; score: number }[] = [];
+
+  for (const chunk of chunks) {
+    const lines = chunk.content
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l.length > 15 && !l.endsWith(':'));
+
+    for (const line of lines) {
+      const lower = line.toLowerCase();
+      let lineScore = 0;
+      for (const token of queryTokens) {
+        if (lower.includes(token)) {
+          lineScore += 3;
+        }
+      }
+      if (lineScore > 0) {
+        candidateLines.push({ line: line.replace(/^-\s*/, ''), score: lineScore });
+      }
+    }
+  }
+
+  candidateLines.sort((a, b) => b.score - a.score);
+  if (candidateLines.length > 0) {
+    const uniqueLines = Array.from(new Set(candidateLines.map((c) => c.line))).slice(0, 3);
+    return uniqueLines.join(' ');
   }
 
   const top = chunks[0] || ME_KNOWLEDGE_CHUNKS[0];
-  return `Pranam Kumar Chand is a B.Sc. Data Science student at Ravenshaw University, Odisha (2025–2029, 7.76 SGPA in 1st semester), specializing in Python, SQL, Power BI, Machine Learning, and RAG applications. ${top.content.split('\n')[0]}`;
+  const summaryLines = top.content
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l.length > 20 && !l.endsWith(':'))
+    .slice(0, 2)
+    .join(' ');
+  return (
+    summaryLines ||
+    `Pranam Kumar Chand is a B.Sc. Data Science student at Ravenshaw University, Odisha (2025–2029, 7.76 SGPA in 1st semester), building projects across Data Analytics, Power BI, Machine Learning, and RAG applications.`
+  );
 }
+

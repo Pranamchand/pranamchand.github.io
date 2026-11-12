@@ -263,7 +263,17 @@ function buildProviderPool(): ProviderSlot[] {
 
 const providerPool = buildProviderPool();
 
+app.options('/api/agent/chat', (_req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.status(204).end();
+});
+
 app.post('/api/agent/chat', async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   try {
     const rawMessage =
       typeof req.body?.message === 'string' ? req.body.message.trim() : '';

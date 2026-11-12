@@ -156,36 +156,51 @@ export const AiAgentWindow: React.FC = () => {
     setIsThinking(true);
 
     try {
-      const response = await fetch('/api/agent/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: question,
-          history: historyPayload,
-        }),
-      });
+      const isStaticHost =
+        typeof window !== 'undefined' &&
+        window.location.hostname.endsWith('.github.io');
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+      const endpoints = isStaticHost
+        ? [
+            'https://ais-pre-djgmwteq2m3tnaxeqzbhqk-505372511230.asia-northeast1.run.app/api/agent/chat',
+          ]
+        : ['/api/agent/chat'];
+
+      let data: { reply?: string; sources?: string[] } | null = null;
+
+      for (const endpoint of endpoints) {
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            signal: AbortSignal.timeout(4500),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: question,
+              history: historyPayload,
+            }),
+          });
+
+          if (response.ok) {
+            data = (await response.json()) as {
+              reply?: string;
+              sources?: string[];
+            };
+            if (data?.reply?.trim()) break;
+          }
+        } catch {
+          // Proceed to local RAG synthesis if remote endpoint is unreachable
+        }
       }
 
-      const data = (await response.json()) as {
-        reply?: string;
-        sources?: string[];
-      };
-
+      const chunks = retrieveKnowledgeChunks(question, 3);
       const replyText =
-        data.reply?.trim() ||
-        synthesizeLocalRagResponse(
-          question,
-          retrieveKnowledgeChunks(question, 3)
-        );
+        data?.reply?.trim() || synthesizeLocalRagResponse(question, chunks);
 
       const assistantMsg: AgentMessage = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
         content: replyText,
-        sources: data.sources,
+        sources: data?.sources || chunks.map((c) => c.section),
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
